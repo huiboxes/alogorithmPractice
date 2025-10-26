@@ -45,43 +45,31 @@ public class TrappingRainWater {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
         public int trap(int[] height) {
-            if(height == null || height.length < 2) {
+            if(height == null || height.length <= 2) {
                 return 0;
             }
 
             int total = 0;
-            int slow = 0;
-            while (slow < height.length - 2) {
-                if (height[slow] == 0) {
-                    slow++;
-                    continue;
-                }
+            int left = 0;
+            int right = height.length - 1;
+            int leftMax = 0;
+            int rightMax = 0;
 
-                int fast = slow + 1;
-                int maxRightHeight = 0;
-                int maxRightIndex = -1;
-
-                // 找第一个大于左边界或最大的右边界
-                while (fast < height.length) {
-                    if (height[fast] >= height[slow]) {
-                        maxRightIndex = fast;
-                        break;
+            while (left < right) {
+                if (height[left] < height[right]) {
+                    if (height[left] >= leftMax) {
+                        leftMax = height[left];
+                    } else {
+                        total += leftMax - height[left];
                     }
-
-                    if (height[fast] > maxRightHeight) {
-                        maxRightHeight = height[fast];
-                        maxRightIndex = fast;
-                    }
-                    fast++;
-                }
-
-                if(maxRightIndex != -1 && maxRightIndex > slow) {
-                    for (int i = slow + 1; i < maxRightIndex; i++) {
-                        total += Math.max(0, Math.min(height[slow], height[maxRightIndex]) - height[i]);
-                    }
-                    slow = maxRightIndex;
+                    left++;
                 } else {
-                    slow++;
+                    if (height[right] >= rightMax) {
+                        rightMax = height[right];
+                    } else {
+                        total += rightMax - height[right];
+                    }
+                    right--;
                 }
             }
 
