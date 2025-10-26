@@ -37,6 +37,9 @@
 // Related Topics 栈 数组 双指针 动态规划 单调栈 👍 5939 👎 0
 
 package editor.cn;
+
+import java.util.Stack;
+
 public class TrappingRainWater {
     public static void main(String[] args) {
         Solution solution = new TrappingRainWater().new Solution();
@@ -52,22 +55,20 @@ class Solution {
             }
 
             int total = 0;
-            int[] leftMax = new int[length];
-            int[] rightMax = new int[length];
+            Stack<Integer> stack = new Stack<>();
 
-            leftMax[0] = height[0];
-            for (int i = 1; i < length; i++) {
-                leftMax[i] = Math.max(leftMax[i-1], height[i]);
-            }
+            for (int i = 0; i < length; i++) {
+                // 遇到了大于栈顶高度的柱子
+                while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                    int bottom = stack.pop();
+                    if(stack.isEmpty()) break;
 
-            rightMax[length-1] = height[length-1];
-            for (int i = length-2; i >= 0; i--) {
-                rightMax[i] = Math.max(rightMax[i+1], height[i]);
-            }
-
-            for (int i = 1; i < length; i++) {
-                int currentWaterHeight = Math.min(leftMax[i], rightMax[i]);
-                total += Math.max(0, currentWaterHeight - height[i]);
+                    int left = stack.peek();
+                    int width = i - left - 1;
+                    int h = Math.min(height[left], height[i]) - height[bottom];
+                    total += width * h;
+                }
+                stack.push(i);
             }
 
             return total;
