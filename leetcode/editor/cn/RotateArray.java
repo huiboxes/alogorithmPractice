@@ -61,20 +61,24 @@ public class RotateArray {
 class Solution {
     public void rotate(int[] nums, int k) {
         if(nums.length <= 1) return;
-        k %= nums.length;
-        if (k == 0) return;
+        k = k % nums.length;
+        int count = 0;
 
-        ArrayList<Integer> tmpArr = new ArrayList<>();
-        for (int i = 0; i < k; i++) {
-            tmpArr.add(nums[nums.length - k + i]);
-        }
-        for (int i = 0; i < nums.length - k; i++) {
-            tmpArr.add(nums[i]);
+        for (int i = 0; count < nums.length; i++) {
+            int current = i;
+            int pre = nums[i];
+
+            do {
+                int next = (current + k) % nums.length;
+                int temp = nums[next];
+                nums[next] = pre;
+                pre = temp;
+                current = next;
+                count++;
+            } while (i != current);
+
         }
 
-        for (int i = 0; i < nums.length; i++) {
-            nums[i] = tmpArr.get(i);
-        }
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
