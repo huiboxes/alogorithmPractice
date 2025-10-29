@@ -52,21 +52,27 @@ class Solution {
         int length = nums.length;
 
         for (int i = 0; i < length; i++) {
-            while (nums[i] > 0 && nums[i] <= length && nums[nums[i] - 1] != nums[i]) {
-                int temp = nums[nums[i] - 1];
-                nums[nums[i] - 1] = nums[i];
-                nums[i] = temp;
+            if (nums[i] <= 0) {
+                nums[i] = length + 1;
+            }
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            int num = Math.abs(nums[i]);
+            if (num <= length) {
+                nums[num - 1] = -Math.abs(nums[num - 1]);
             }
         }
 
         for (int i = 0; i < length; i++) {
-            if(nums[i] != i + 1) {
+            if(nums[i] > 0) {
                 return i + 1;
             }
         }
 
         return length + 1;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
