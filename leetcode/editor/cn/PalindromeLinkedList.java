@@ -59,7 +59,6 @@ public class PalindromeLinkedList {
  */
 
 
-
 class Solution {
 
 //    public class ListNode {
@@ -70,27 +69,44 @@ class Solution {
 //        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 //    }
 
-    private ListNode frontPointer;
 
     public boolean isPalindrome(ListNode head) {
         if(head == null || head.next == null) return true;
 
-        frontPointer = head;
-        return recurse(head);
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode secondList = reverseList(slow.next);
+
+        ListNode firstHalf = head;
+        while (secondList != null) {
+            if(firstHalf.val != secondList.val) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            secondList = secondList.next;
+        }
+
+        return true;
     }
 
-    private boolean recurse(ListNode currentNode) {
-        if(currentNode == null) return true;
+    private ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
 
-        if(!recurse(currentNode.next)) {
-            return false;
+        while (cur != null) {
+            ListNode tempNode = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tempNode;
         }
 
-        if(currentNode.val != frontPointer.val) {
-            return false;
-        }
-        frontPointer = frontPointer.next;
-        return true;
+        return pre;
     }
 
 }
