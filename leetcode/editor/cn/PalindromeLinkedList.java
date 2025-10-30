@@ -70,28 +70,29 @@ class Solution {
 //        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 //    }
 
+    private ListNode frontPointer;
+
     public boolean isPalindrome(ListNode head) {
         if(head == null || head.next == null) return true;
 
-        ListNode current = head;
-        Stack<Integer> stack = new Stack<>();
+        frontPointer = head;
+        return recurse(head);
+    }
 
-        while (current != null) {
-            stack.add(current.val);
-            current = current.next;
+    private boolean recurse(ListNode currentNode) {
+        if(currentNode == null) return true;
+
+        if(!recurse(currentNode.next)) {
+            return false;
         }
 
-        current = head;
-
-        while (current != null) {
-            if(current.val != stack.pop()) {
-                return false;
-            }
-            current = current.next;
+        if(currentNode.val != frontPointer.val) {
+            return false;
         }
-
+        frontPointer = frontPointer.next;
         return true;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
