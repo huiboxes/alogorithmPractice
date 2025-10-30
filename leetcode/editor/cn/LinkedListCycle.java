@@ -92,13 +92,15 @@ public class Solution {
     public boolean hasCycle(ListNode head) {
         if (head == null || head.next == null) return false;
 
-        HashSet<ListNode> set = new HashSet<>();
+        ListNode old = new ListNode(0);
+
         while (head != null) {
-            set.add(head);
-            if (set.contains(head.next)) {
+            if(head.next == old) {
                 return true;
             }
-            head = head.next;
+            ListNode next = head.next;
+            head.next = old;
+            head = next;
         }
 
         return false;
