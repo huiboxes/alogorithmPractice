@@ -81,17 +81,15 @@ class Solution {
     public ListNode reverseList(ListNode head) {
         if (head == null || head.next == null) return head;
 
-        ListNode prev = null;
-        ListNode curr = head;
-
-        while (curr != null) {
-            ListNode temp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = temp;
+        ListNode newHead = null;
+        while (head != null) {
+            ListNode tmp = head;
+            head = head.next;
+            tmp.next = newHead;
+            newHead = tmp;
         }
 
-        return prev;
+        return newHead;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
