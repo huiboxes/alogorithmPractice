@@ -73,37 +73,25 @@ class Solution {
 //    }
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode prev = dummy;
 
-
-        while (true) {
-            ListNode last = prev;
-            for (int i = 0; i < k; i++) {
-                last = last.next;
-                if(last == null) {
-                    return dummy.next;
-                }
-            }
-
-            ListNode curr = prev.next;
-            ListNode nextPrev = curr;
-
-            ListNode prevNode = null;
-            for (int i = 0; i < k; i++) {
-                ListNode nextNode = curr.next;
-                curr.next = prevNode;
-                prevNode = curr;
-                curr = nextNode;
-            }
-
-            prev.next = prevNode;
-            nextPrev.next = curr;
-            prev = nextPrev;
-
+        ListNode node = head;
+        for (int i = 0; i < k; i++) {
+            if(node == null) return head;
+            node = node.next;
         }
 
+        ListNode prev = null;
+        ListNode curr = head;
+        for (int i = 0; i < k; i++) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        head.next = reverseKGroup(curr, k);
+
+        return prev;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
