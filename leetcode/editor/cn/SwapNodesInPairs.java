@@ -71,15 +71,23 @@ class Solution {
             return head;
         }
 
-        ListNode first = head;
-        ListNode second = head.next;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
 
-        ListNode remaining = swapPairs(second.next);
+        ListNode prev = dummy;
+        while(prev.next != null && prev.next.next != null) {
+            ListNode first = prev.next;
+            ListNode second = first.next;
+            ListNode nextPair = second.next;
 
-        second.next = first;
-        first.next = remaining;
+            prev.next = second;
+            second.next = first;
+            first.next = nextPair;
 
-        return second;
+            prev = first;
+        }
+
+        return dummy.next;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
