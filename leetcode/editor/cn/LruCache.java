@@ -66,6 +66,7 @@
 package editor.cn;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class LruCache {
@@ -74,87 +75,27 @@ public class LruCache {
         System.out.println("Hello world");
     }
     //leetcode submit region begin(Prohibit modification and deletion)
-class LRUCache {
+class LRUCache extends LinkedHashMap<Integer, Integer> {
 
-        class DLinkedNode {
-            int key;
-            int value;
-            DLinkedNode prev;
-            DLinkedNode next;
-        }
 
-        private Map<Integer, DLinkedNode> cache = new HashMap<>();
-        private int size;
         private int capacity;
-        private DLinkedNode head;
-        private DLinkedNode tail;
 
         public LRUCache(int capacity) {
+            super(capacity, 0.75F, true);
             this.capacity = capacity;
-
-            head = new DLinkedNode();
-            tail = new DLinkedNode();
-
-            head.next = tail;
-            tail.prev = head;
         }
 
         public int get(int key) {
-            DLinkedNode node = cache.get(key);
-            if(node == null) {
-                return -1;
-            }
-
-            moveToHead(node);
-            return node.value;
+            return super.getOrDefault(key, -1);
         }
 
         public void put(int key, int value) {
-            DLinkedNode node = cache.get(key);
-
-            if(node == null) {
-                DLinkedNode newNode = new DLinkedNode();
-                newNode.key = key;
-                newNode.value = value;
-
-                cache.put(key, newNode);
-                addToHead(newNode);
-
-                size++;
-                if(size > capacity) {
-                    DLinkedNode tail = removeTail();
-                    cache.remove(tail.key);
-                    size--;
-                }
-            } else {
-                node.value = value;
-                moveToHead(node);
-            }
+            super.put(key, value);
         }
 
-        private void addToHead(DLinkedNode node) {
-            node.prev = head;
-            node.next = head.next;
-
-            head.next.prev = node;
-            head.next = node;
-        }
-
-        private void moveToHead(DLinkedNode node) {
-            removeNode(node);
-            addToHead(node);
-        }
-
-        private void removeNode(DLinkedNode node) {
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-        }
-
-
-        private DLinkedNode removeTail() {
-            DLinkedNode res = tail.prev;
-            removeNode(res);
-            return res;
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+            return size() > capacity;
         }
 
 }
