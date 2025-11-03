@@ -64,6 +64,10 @@
 // Related Topics 设计 哈希表 链表 双向链表 👍 3632 👎 0
 
 package editor.cn;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LruCache {
     public static void main(String[] args) {
         Solution solution = new LruCache().new Solution();
@@ -72,55 +76,87 @@ public class LruCache {
     //leetcode submit region begin(Prohibit modification and deletion)
 class LRUCache {
 
-        private int[][] cache;
+        class DLinkedNode {
+            int key;
+            int value;
+            DLinkedNode prev;
+            DLinkedNode next;
+        }
+
+        private Map<Integer, DLinkedNode> cache = new HashMap<>();
+        private int size;
         private int capacity;
-        private int timestamp;
+        private DLinkedNode head;
+        private DLinkedNode tail;
 
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        this.cache =  new int[capacity][3];
-        this.timestamp = 0;
-    }
-    
-    public int get(int key) {
-        for (int i = 0; i < cache.length; i++) {
-            if(cache[i][0] == key && cache[i][2] != 0) {
-                cache[i][2] = ++timestamp;
-                return cache[i][1];
-            }
-        }
-        return -1;
-    }
-    
-    public void put(int key, int value) {
-        for (int i = 0; i < cache.length; i++) {
-            if(cache[i][0] == key) {
-                cache[i][1] = value;
-                cache[i][2] = ++timestamp;
-                return;
-            }
+        public LRUCache(int capacity) {
+            this.capacity = capacity;
+
+            head = new DLinkedNode();
+            tail = new DLinkedNode();
+
+            head.next = tail;
+            tail.prev = head;
         }
 
-        for (int i = 0; i < cache.length; i++) {
-            if(cache[i][0] == 0 && cache[i][1] == 0) {
-                cache[i][0] = key;
-                cache[i][1] = value;
-                cache[i][2] = ++timestamp;
-                return;
+        public int get(int key) {
+            DLinkedNode node = cache.get(key);
+            if(node == null) {
+                return -1;
+            }
+
+            moveToHead(node);
+            return node.value;
+        }
+
+        public void put(int key, int value) {
+            DLinkedNode node = cache.get(key);
+
+            if(node == null) {
+                DLinkedNode newNode = new DLinkedNode();
+                newNode.key = key;
+                newNode.value = value;
+
+                cache.put(key, newNode);
+                addToHead(newNode);
+
+                size++;
+                if(size > capacity) {
+                    DLinkedNode tail = removeTail();
+                    cache.remove(tail.key);
+                    size--;
+                }
+            } else {
+                node.value = value;
+                moveToHead(node);
             }
         }
 
-        int oldestIndex = 0;
-        for (int i = 0; i < cache.length; i++) {
-            if(cache[i][2] < cache[oldestIndex][2]) {
-                oldestIndex = i;
-            }
-        }
-        cache[oldestIndex][0] = key;
-        cache[oldestIndex][1] = value;
-        cache[oldestIndex][2] = ++timestamp;
+        private void addToHead(DLinkedNode node) {
+            node.prev = head;
+            node.next = head.next;
 
-    }
+            head.next.prev = node;
+            head.next = node;
+        }
+
+        private void moveToHead(DLinkedNode node) {
+            removeNode(node);
+            addToHead(node);
+        }
+
+        private void removeNode(DLinkedNode node) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
+
+
+        private DLinkedNode removeTail() {
+            DLinkedNode res = tail.prev;
+            removeNode(res);
+            return res;
+        }
+
 }
 
 /**
