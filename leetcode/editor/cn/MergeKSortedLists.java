@@ -51,6 +51,10 @@
 // Related Topics 链表 分治 堆（优先队列） 归并排序 👍 3091 👎 0
 
 package editor.cn;
+
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class MergeKSortedLists {
     public static void main(String[] args) {
         Solution solution = new MergeKSortedLists().new Solution();
@@ -82,30 +86,28 @@ class Solution {
             return null;
         }
 
-        return merge(lists, 0, lists.length - 1);
-    }
-
-    private ListNode merge(ListNode[] lists, int left, int right) {
-        if(left == right) return lists[left];
-        if(left > right) return null;
-
-        int mid = left + (right - left) / 2;
-        ListNode l1 = merge(lists, left, mid);
-        ListNode l2 = merge(lists, mid + 1, right);
-        return mergerTwoLists(l1, l2);
-    }
-
-    private ListNode mergerTwoLists(ListNode l1, ListNode l2) {
-        if(l1 == null) return l2;
-        if(l2 == null) return l1;
-        if(l1.val < l2.val) {
-            l1.next = mergerTwoLists(l1.next, l2);
-            return l1;
-        } else {
-            l2.next = mergerTwoLists(l1, l2.next);
-            return l2;
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a.val));
+        for (ListNode list : lists) {
+            if (list != null) {
+                pq.offer(list);
+            }
         }
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        while (!pq.isEmpty()) {
+            ListNode node = pq.poll();
+            current.next = node;
+            current = current.next;
+            if(node.next != null) {
+                pq.offer(node.next);
+            }
+        }
+
+        return dummy.next;
     }
+
 
 }
 //leetcode submit region end(Prohibit modification and deletion)
