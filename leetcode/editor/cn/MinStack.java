@@ -64,7 +64,7 @@ public class MinStack {
 class MinStack {
 
         private Stack<Long> stack;
-        private long min;
+        private static final long MASK = 0xFFFFFFFFL;
 
     public MinStack() {
         stack = new Stack<>();
@@ -72,37 +72,25 @@ class MinStack {
     
     public void push(int val) {
         if(stack.isEmpty()) {
-            stack.push(0L);
-            min = val;
+            stack.push(((long) val << 32) | (val & MASK));
         } else {
-            stack.push(val - min);
-            if(val < min) {
-                min = val;
-            }
+            int currentMin = (int) (stack.peek() & MASK);
+            int newMin = Math.min(currentMin, val);
+            stack.push(((long) val << 32) | (newMin & MASK));
+
         }
     }
 
     public void pop() {
-        if(stack.isEmpty()) return;
-        Long diff = stack.pop();
-        if(diff < 0 ) {
-            min = min - diff;
-        }
+        if(!stack.isEmpty()) stack.pop();
     }
     
     public int top() {
-        if(stack.isEmpty()) return -1;
-        Long diff = stack.peek();
-        if(diff < 0) {
-            return (int)min;
-        } else {
-            return (int) (min + diff);
-        }
+        return (int) (stack.peek() >> 32);
     }
     
     public int getMin() {
-        return (int) min;
-
+        return (int)(stack.peek() & MASK);
     }
 }
 
