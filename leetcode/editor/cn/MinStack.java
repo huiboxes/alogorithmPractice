@@ -63,34 +63,46 @@ public class MinStack {
     //leetcode submit region begin(Prohibit modification and deletion)
 class MinStack {
 
-        private Stack<Integer> stack;
-        private Stack<Integer> minStack;
+        private Stack<Long> stack;
+        private long min;
 
     public MinStack() {
         stack = new Stack<>();
-        minStack = new Stack<>();
     }
     
     public void push(int val) {
-        stack.push(val);
-        if(minStack.isEmpty()) {
-            minStack.push(val);
+        if(stack.isEmpty()) {
+            stack.push(0L);
+            min = val;
         } else {
-            minStack.push(Math.min(val, minStack.peek()));
+            stack.push(val - min);
+            if(val < min) {
+                min = val;
+            }
         }
     }
 
     public void pop() {
-        stack.pop();
-        minStack.pop();
+        if(stack.isEmpty()) return;
+        Long diff = stack.pop();
+        if(diff < 0 ) {
+            min = min - diff;
+        }
     }
     
     public int top() {
-        return stack.peek();
+        if(stack.isEmpty()) return -1;
+        Long diff = stack.peek();
+        if(diff < 0) {
+            return (int)min;
+        } else {
+            return (int) (min + diff);
+        }
     }
     
     public int getMin() {
-        return minStack.peek();
+        return (int) min;
+
     }
 }
 
