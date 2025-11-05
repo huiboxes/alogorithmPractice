@@ -80,24 +80,17 @@ class Solution {
     public boolean isValid(String s) {
         int length = s.length();
         if(length % 2 != 0) return false;
-        Stack<Character> stack = new Stack<>();
 
-        for (char c : s.toCharArray()) {
-            if(c == '(' || c == '[' || c == '{') {
-                stack.push(c);
-            } else if (stack.isEmpty()) {
-                return false;
-            } else if (c == ')' && stack.pop() != '(') {
-                return false;
-            } else if (c == ']' && stack.pop() != '[') {
-                return false;
-            } else if (c == '}' && stack.pop() != '{') {
-                return false;
+        while (true) {
+            length = s.length();
+            s = s.replace("()", "").replace("[]", "").replace("{}","");
+            if(length == s.length()) {
+                break;
             }
-
         }
 
-        return stack.isEmpty();
+        return s.length() == 0;
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
