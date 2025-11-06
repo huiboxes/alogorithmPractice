@@ -60,6 +60,9 @@
 // Related Topics 栈 递归 字符串 👍 2093 👎 0
 
 package editor.cn;
+
+import java.util.Stack;
+
 public class DecodeString {
     public static void main(String[] args) {
         Solution solution = new DecodeString().new Solution();
@@ -68,38 +71,39 @@ public class DecodeString {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public String decodeString(String s) {
-        return decodeRecursive(s, new int[]{0});
-    }
+        Stack<Integer> numStack = new Stack<>();
+        Stack<StringBuilder> strStack = new Stack<>();
+        StringBuilder currentStr = new StringBuilder();
+        int currentNum = 0;
 
-    private String decodeRecursive(String s, int[] index) {
-        StringBuilder result = new StringBuilder();
-        int num = 0;
+        for (char c : s.toCharArray()) {
+            if(Character.isDigit(c)) {
+                currentNum = currentNum * 10 + (c - '0');
+            } else if (c == '[') {
+                numStack.push(currentNum);
+                strStack.push(currentStr);
 
-        while(index[0] < s.length()) {
-            char c = s.charAt(index[0]);
+                currentNum = 0;
+                currentStr = new StringBuilder();
+            } else if (c == ']') {
+                int times = numStack.pop();
+                StringBuilder prevStr = strStack.pop();
 
-            if(Character.isDigit(c)){
-                num = num * 10 + (c - '0');
-                index[0]++;
-            } else if(c == '[') {
-                index[0]++;
-                String innerString = decodeRecursive(s, index);
-
-                for (int i = 0; i < num; i++) {
-                    result.append(innerString);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < times; i++) {
+                    sb.append(currentStr);
                 }
-                num = 0;
-            } else if(c == ']') {
-                index[0]++;
-                break;
+
+                currentStr = prevStr.append(sb);
             } else {
-                result.append(c);
-                index[0]++;
+                currentStr.append(c);
             }
         }
 
-        return result.toString();
+        return currentStr.toString();
     }
+
+
 
 }
 
