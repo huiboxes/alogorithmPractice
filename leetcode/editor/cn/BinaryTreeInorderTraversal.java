@@ -45,6 +45,7 @@
 
 package editor.cn;
 
+
 import javax.swing.tree.TreeNode;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,22 +74,42 @@ public class BinaryTreeInorderTraversal {
  */
 class Solution {
 
+    class ColorNode {
+        TreeNode node;
+        String color;
+
+        public ColorNode(TreeNode node, String color) {
+            this.node = node;
+            this.color = color;
+        }
+    }
 
     public List<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode current = root;
+        Stack<ColorNode> stack = new Stack<>();
 
-        while (current != null || !stack.isEmpty()) {
-            while (current != null) {
-                stack.push(current);
-                current = current.left;
+        if(root != null) {
+            stack.push(new ColorNode(root, "white"));
+        }
+
+        while (!stack.isEmpty()) {
+            ColorNode colorNode = stack.pop();
+            TreeNode node = colorNode.node;
+
+            if("white".equals(colorNode.color)) {
+                if(node.right != null) {
+                    stack.push(new ColorNode(node.right, "white"));
+                }
+                stack.push(new ColorNode(node, "gray"));
+                if(node.left != null) {
+                    stack.push(new ColorNode(node.left, "white"));
+                }
+
+
+            } else {
+                result.add(node.val);
             }
 
-            current = stack.pop();
-            result.add(current.val);
-
-            current = current.right;
         }
 
         return result;
