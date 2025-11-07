@@ -50,29 +50,34 @@ public class LargestRectangleInHistogram {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        // 存柱子索引的单调递增栈
-        Stack<Integer> stack = new Stack<>();
 
-        // 原数组前后各添加一个高度为0的哨兵柱子，简化边界处理
-        int[] newHeights = new int[heights.length + 2];
-        System.arraycopy(heights, 0 ,newHeights, 1, heights.length);
+        return getArea(heights, 0, heights.length - 1);
+    }
 
-        int maxArea = 0;
+    private int getArea(int[] heights, int start, int end) {
+        // 递归终止条件
+        if(start > end) return 0;
 
-        for (int i = 0; i < newHeights.length; i++) {
-            // 当前柱子比栈顶柱子矮时说明找到了栈顶柱子的右边界
-            // 计算栈顶主子为高的面积
-            while (!stack.isEmpty() && newHeights[i] < newHeights[stack.peek()]) {
-                int height = newHeights[stack.pop()];
-                int width = i - stack.peek() - 1;
-                maxArea = Math.max(maxArea, height * width);
+        // 找到区间内最小高度柱子的索引
+        int minIndex = start;
+        for (int i = start; i <= end; i++) {
+            if(heights[i] < heights[minIndex]) {
+                minIndex = i;
             }
-
-            stack.push(i);
         }
 
+        // 三种情况取最大值
+        // 跨越整个区间
+        int areaWithMinHeight = heights[minIndex] * (end - start + 1);
 
-        return maxArea;
+        // 左侧的最大矩形
+        int leftMaxArea = getArea(heights, start, minIndex - 1);
+
+        // 右侧的最大矩形
+        int rightMaxArea = getArea(heights, minIndex + 1, end);
+
+        return Math.max(areaWithMinHeight, Math.max(leftMaxArea, rightMaxArea));
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
