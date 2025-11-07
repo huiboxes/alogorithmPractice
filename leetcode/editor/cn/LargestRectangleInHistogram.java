@@ -50,35 +50,39 @@ public class LargestRectangleInHistogram {
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int largestRectangleArea(int[] heights) {
+        if(heights.length == 0) return 0;
 
-        return getArea(heights, 0, heights.length - 1);
-    }
+        int length = heights.length;
+        int[] left = new int[length]; // 柱子向左能扩展到的最远位置
+        int[] right = new int[length]; // 柱子向右能扩展到的最远位置
 
-    private int getArea(int[] heights, int start, int end) {
-        // 递归终止条件
-        if(start > end) return 0;
-
-        // 找到区间内最小高度柱子的索引
-        int minIndex = start;
-        for (int i = start; i <= end; i++) {
-            if(heights[i] < heights[minIndex]) {
-                minIndex = i;
+        left[0] = 0;
+        for (int i = 1; i < length; i++) {
+            int p = i - 1;
+            while (p >= 0 && heights[p] >= heights[i]) {
+                p = left[p] - 1;
             }
+            left[i] = p + 1;
         }
 
-        // 三种情况取最大值
-        // 跨越整个区间
-        int areaWithMinHeight = heights[minIndex] * (end - start + 1);
+        right[length - 1] = length - 1;
+        for (int i = length - 2; i >= 0; i--) {
+            int p = i + 1;
+            while (p < length && heights[p] >= heights[i]) {
+                p = right[p] + 1;
+            }
+            right[i] = p - 1;
+        }
 
-        // 左侧的最大矩形
-        int leftMaxArea = getArea(heights, start, minIndex - 1);
+        int maxArea = 0;
+        for (int i = 0; i < length; i++) {
+            int width = right[i] -  left[i] + 1;
+            maxArea = Math.max(maxArea, heights[i] * width);
+        }
 
-        // 右侧的最大矩形
-        int rightMaxArea = getArea(heights, minIndex + 1, end);
-
-        return Math.max(areaWithMinHeight, Math.max(leftMaxArea, rightMaxArea));
-
+        return maxArea;
     }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
