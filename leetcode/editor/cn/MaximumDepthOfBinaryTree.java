@@ -41,6 +41,7 @@
 package editor.cn;
 
 import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
 
 public class MaximumDepthOfBinaryTree {
     public static void main(String[] args) {
@@ -68,10 +69,22 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
 
-        return Math.max(leftDepth, rightDepth) + 1;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            depth++;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if(node.left != null) queue.offer(node.left);
+                if(node.right != null) queue.poll(node.right);
+            }
+        }
+
+        return depth;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
