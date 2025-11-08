@@ -46,7 +46,7 @@
 //
 // Related Topics 链表 双指针 分治 排序 归并排序 👍 2639 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 public class SortList {
     public static void main(String[] args) {
         Solution solution = new SortList().new Solution();

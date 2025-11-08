@@ -39,7 +39,7 @@
 //
 // Related Topics 递归 链表 👍 2498 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 public class SwapNodesInPairs {
     public static void main(String[] args) {
         Solution solution = new SwapNodesInPairs().new Solution();

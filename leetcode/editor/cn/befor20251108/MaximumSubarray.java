@@ -46,7 +46,7 @@
 //
 // Related Topics 数组 分治 动态规划 👍 7169 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 public class MaximumSubarray {
     public static void main(String[] args) {
         Solution solution = new MaximumSubarray().new Solution();

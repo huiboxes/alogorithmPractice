@@ -66,12 +66,10 @@
 //
 // Related Topics 哈希表 链表 👍 1692 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 
 
 import org.w3c.dom.Node;
-
-import java.util.HashMap;
 
 public class CopyListWithRandomPointer {
     public static void main(String[] args) {

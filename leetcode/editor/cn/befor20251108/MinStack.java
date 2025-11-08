@@ -50,10 +50,9 @@
 //
 // Related Topics 栈 设计 👍 2003 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicStampedReference;
 
 public class MinStack {
     public static void main(String[] args) {

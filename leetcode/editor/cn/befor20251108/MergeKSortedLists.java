@@ -50,7 +50,7 @@
 //
 // Related Topics 链表 分治 堆（优先队列） 归并排序 👍 3091 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;

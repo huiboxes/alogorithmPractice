@@ -45,9 +45,7 @@
 //
 // Related Topics 链表 双指针 👍 3201 👎 0
 
-package editor.cn;
-
-import java.util.ArrayList;
+package editor.cn.befor20251108;
 
 public class RemoveNthNodeFromEndOfList {
     public static void main(String[] args) {

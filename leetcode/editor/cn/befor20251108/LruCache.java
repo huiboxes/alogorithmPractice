@@ -63,9 +63,8 @@
 //
 // Related Topics 设计 哈希表 链表 双向链表 👍 3632 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

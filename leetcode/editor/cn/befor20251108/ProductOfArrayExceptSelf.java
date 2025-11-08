@@ -41,7 +41,7 @@
 //
 // Related Topics 数组 前缀和 👍 2133 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 public class ProductOfArrayExceptSelf {
     public static void main(String[] args) {
         Solution solution = new ProductOfArrayExceptSelf().new Solution();

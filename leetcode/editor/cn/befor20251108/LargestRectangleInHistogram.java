@@ -38,9 +38,7 @@
 //
 // Related Topics 栈 数组 单调栈 👍 3014 👎 0
 
-package editor.cn;
-
-import java.util.Stack;
+package editor.cn.befor20251108;
 
 public class LargestRectangleInHistogram {
     public static void main(String[] args) {

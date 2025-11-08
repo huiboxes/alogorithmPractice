@@ -40,7 +40,7 @@
 //
 // Related Topics 递归 链表 👍 3900 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 public class MergeTwoSortedLists {
     public static void main(String[] args) {
         Solution solution = new MergeTwoSortedLists().new Solution();

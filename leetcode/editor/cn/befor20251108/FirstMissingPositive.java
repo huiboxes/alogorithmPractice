@@ -40,7 +40,7 @@
 //
 // Related Topics 数组 哈希表 👍 2438 👎 0
 
-package editor.cn;
+package editor.cn.befor20251108;
 public class FirstMissingPositive {
     public static void main(String[] args) {
         Solution solution = new FirstMissingPositive().new Solution();
