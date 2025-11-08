@@ -46,6 +46,7 @@
 package editor.cn;
 
 import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
 
 public class InvertBinaryTree {
     public static void main(String[] args) {
@@ -72,12 +73,24 @@ class Solution {
     public TreeNode invertTree(TreeNode root) {
         if(root == null) return root;
 
-        TreeNode tempNode = root.right;
-        root.right = root.left;
-        root.left = tempNode;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
 
-        invertTree(root.left);
-        invertTree(root.right);
+
+        while(!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+
+            TreeNode tempNode = node.right;
+            node.right = node.left;
+            node.left = tempNode;
+
+            if(node.left != null) {
+                queue.offer(node.left);
+            }
+            if(node.right != null) {
+                queue.offer(node.right);
+            }
+        }
 
         return root;
     }
