@@ -40,6 +40,7 @@
 package editor.cn;
 
 import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
 
 public class DiameterOfBinaryTree {
     public static void main(String[] args) {
@@ -64,25 +65,51 @@ public class DiameterOfBinaryTree {
  */
 class Solution {
 
-    private int maxDiameter = 0;
 
     public int diameterOfBinaryTree(TreeNode root) {
-        maxDepth(root);
-        return maxDiameter;
-    }
+        if(root == null) return 0;
+        
+        int maxDiameter = 0;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) { 
+            TreeNode node = queue.poll();
+            
+            int diameter = calculateDepth(node.left) + calculateDepth(node.right);
+            maxDiameter = Math.max(maxDiameter, diameter);
 
-    private int maxDepth(TreeNode node) {
-        if(node == null) {
-            return 0;
+            if(node.left != null) queue.offer(node.left);
+            if(node.right != null) queue.offer(node.right);
+
         }
 
-        int leftDepth = maxDepth(node.left);
-        int rightDepth = maxDepth(node.right);
-
-        maxDiameter = Math.max(maxDiameter, leftDepth + rightDepth);
-
-        return Math.max(leftDepth, rightDepth) + 1;
+        return maxDiameter;
     }
+    
+    private int calculateDepth(TreeNode root) {
+        if(root == null) return 0;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int depth = 0;
+        
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            depth++;
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if(node.left != null) queue.offer(node.left);
+                if(node.right != null) queue.offer(node.right);
+            }
+            
+        }
+        
+        return depth;
+    }
+
+    
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
