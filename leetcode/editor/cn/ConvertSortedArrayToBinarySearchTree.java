@@ -40,6 +40,7 @@ package editor.cn;
 
 
 import javax.swing.tree.TreeNode;
+import java.util.LinkedList;
 
 public class ConvertSortedArrayToBinarySearchTree {
     public static void main(String[] args) {
@@ -64,23 +65,46 @@ public class ConvertSortedArrayToBinarySearchTree {
  */
 class Solution {
     public TreeNode sortedArrayToBST(int[] nums) {
-        return buildBST(nums, 0, nums.length - 1);
+        if(nums.length == 0) return null;
 
-    }
+        LinkedList<TreeNode> nodeQueue = new LinkedList<>();
+        LinkedList<Integer> leftQueue = new LinkedList<>();
+        LinkedList<Integer> rightQueue = new LinkedList<>();
 
-    private TreeNode buildBST(int[] nums, int left, int right) {
-        if(left > right) {
-            return null;
+        TreeNode root = new TreeNode();
+
+        nodeQueue.offer(root);
+        leftQueue.offer(0);
+        rightQueue.offer(nums.length - 1);
+        while(!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.poll();
+            Integer left = leftQueue.poll();
+            Integer right = rightQueue.poll();
+
+            int mid = left + (right - left) / 2;
+            node.val = nums[mid];
+
+            if(left <= mid - 1) {
+                node.left = new TreeNode();
+                nodeQueue.offer(node.left);
+                leftQueue.offer(left);
+                rightQueue.offer(mid - 1);
+            }
+
+            if(mid + 1 <= right) {
+                node.right = new TreeNode();
+                nodeQueue.offer(node.right);
+                leftQueue.offer(mid + 1);
+                rightQueue.offer(right);
+            }
+
         }
 
-        int mid = left + (right - left) / 2;
-        TreeNode root = new TreeNode(nums[mid]);
-
-        root.left = buildBST(nums, left, mid - 1);
-        root.right = buildBST(nums, mid + 1, right);
-
         return root;
+
     }
+
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
