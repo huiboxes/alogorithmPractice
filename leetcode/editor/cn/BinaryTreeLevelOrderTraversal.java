@@ -71,32 +71,26 @@ class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         ArrayList<List<Integer>> result = new ArrayList<>();
         if(root == null) return result;
-
-        LinkedList<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-
-        while(!queue.isEmpty()) {
-            int levelSize = queue.size();
-            ArrayList<Integer> currentLevel = new ArrayList<>();
-
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode node = queue.poll();
-                currentLevel.add(node.val);
-
-                if(node.left != null) {
-                    queue.offer(node.left);
-                }
-
-                if(node.right != null) {
-                    queue.offer(node.right);
-                }
-
-            }
-
-            result.add(currentLevel);
-        }
+        dfs(root, 0, result);
 
         return result;
+    }
+
+    private void dfs(TreeNode node, int level, List<List<Integer>> result) {
+        if(result.size() <= level) {
+            result.add(new ArrayList<>());
+        }
+
+        result.get(level).add(node.val);
+
+        if(node.left != null) {
+            dfs(node.left, level +1, result);
+        }
+
+        if(node.right != null) {
+            dfs(node.right, level + 1, result);
+        }
+
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
