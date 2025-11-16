@@ -76,25 +76,22 @@ public class FlattenBinaryTreeToLinkedList {
  * }
  */
 class Solution {
+
+    private TreeNode prev = null;
+
     public void flatten(TreeNode root) {
         if(root == null) return;
-        ArrayList<TreeNode> list = new ArrayList<>();
 
-        preOrder(root, list);
+        flatten(root.right);
+        flatten(root.left);
 
-        for (int i = 0; i < list.size() - 1; i++) {
-            list.get(i).left = null;
-            list.get(i).right = list.get(i + 1);
-        }
+        root.right = prev;
+        root.left = null;
+        prev = root;
 
     }
 
-    private void preOrder(TreeNode node, List<TreeNode> list) {
-        if(node == null) return;
-        list.add(node);
-        preOrder(node.left, list);
-        preOrder(node.right, list);
-    }
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
