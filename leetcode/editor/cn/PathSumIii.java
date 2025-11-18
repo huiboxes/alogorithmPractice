@@ -42,6 +42,8 @@
 package editor.cn;
 
 import javax.swing.tree.TreeNode;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PathSumIii {
     public static void main(String[] args) {
@@ -68,16 +70,26 @@ class Solution {
     public int pathSum(TreeNode root, int targetSum) {
         if(root == null) return 0;
 
-        return dfs(root, targetSum) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
+        HashMap<Long, Integer> prefixSumMap = new HashMap<>();
+        prefixSumMap.put(0L, 1);
+
+        return dfs(root, targetSum, prefixSumMap, 0);
     }
 
-    private int dfs(TreeNode node, long targetSum) {
+    private int dfs(TreeNode node, int targetSum, Map<Long, Integer> prefixSumMap, long currentSum) {
         if(node == null) return 0;
 
-        int count = node.val == targetSum ? 1 : 0;
+        // 更新当前路径的前缀和
+        currentSum += node.val;
 
-        count += dfs(node.left, targetSum - node.val);
-        count += dfs(node.right, targetSum - node.val);
+        int count = prefixSumMap.getOrDefault(currentSum - targetSum, 0);
+
+        prefixSumMap.put(currentSum, prefixSumMap.getOrDefault(currentSum, 0) + 1);
+
+        count += dfs(node.left, targetSum, prefixSumMap, currentSum);
+        count += dfs(node.right, targetSum, prefixSumMap, currentSum);
+
+        prefixSumMap.put(currentSum, prefixSumMap.get(currentSum) - 1);
 
         return count;
     }
